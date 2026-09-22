@@ -26,8 +26,32 @@ The bottleneck here was one specific unstable hostel Wi-Fi network, not a flaw i
 
 ## Related Work
 
-This project explores application-layer aggregation, binding HTTP requests directly to specific local interfaces. This is conceptually similar to download managers like `aria2`, but distinct from network-layer multi-path protocols like MPTCP (Multipath TCP) or router-level solutions like OpenMPTCProuter, which handle link aggregation transparently below the application layer.
+Bonding multiple network links together isn't a new problem — a few existing
+projects solve it at different layers, worth naming so it's clear this
+project sits in a known space rather than inventing something from nothing:
 
+- **MPTCP (Multipath TCP)** — a kernel-level TCP extension (RFC 8684) that
+  lets a single connection use multiple interfaces transparently, but both
+  client and server need to support it. This project does the same basic
+  thing at the application layer instead, using HTTP Range requests and
+  manual socket binding, which works against any ordinary server without
+  needing MPTCP on the other end.
+- **OpenMPTCProuter** — an open-source router project that bonds Wi-Fi and
+  cellular using MPTCP, aimed at the same "combine unreliable links into one
+  faster connection" problem this project tackles, at the router/OS level
+  rather than inside a single script.
+- **Speedify** — a commercial VPN-based product that bonds Wi-Fi and
+  cellular on a laptop the same way, running as a background service instead
+  of a CLI tool.
+- **aria2** — a well-known download accelerator that already does the
+  segmented, parallel-Range-request part of this project, but over a single
+  network connection. This project is closer to extending that idea to the
+  case aria2 doesn't handle: multiple interfaces at once, not just multiple
+  parallel requests on one.
+
+Worth being precise about scope: this is application-layer aggregation on a
+single machine, not a kernel feature and not a distributed system — easy
+distinction to blur, so stating it directly here.
 ## Installation & Setup
 
 This project uses `uv` for deterministic, high-speed dependency management.
