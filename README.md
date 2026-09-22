@@ -33,6 +33,6 @@ This project explores application-layer aggregation, binding HTTP requests direc
 This project uses `uv` for deterministic, high-speed dependency management.
 
 ```bash
-git clone [https://github.com/Chakrabortyprasun/net-aggregator.git](https://github.com/Chakrabortyprasun/net-aggregator.git)
+git clone https://github.com/Chakrabortyprasun/net-aggregator.git
 cd net-aggregator
 uv sync
